@@ -176,7 +176,6 @@ def astar(puzzle_board_state):
         """ 整合state和对应f(n)值的类 
             便于open表的实现
         """
-
         def __init__(self, g, state) -> None:
             self.state = state
             self.g = g  # 起点到当前状态的步数
@@ -184,24 +183,25 @@ def astar(puzzle_board_state):
             self.f = self.g + self.h  # 评价函数
 
         def __lt__(self, other):
+            """ 按f(n)比较大小 """
             return self.f < other.f
     
     from queue import PriorityQueue
     open = PriorityQueue()
-    close = set()
-    ans = []
-
     open.put(StateWithF(0, puzzle_board_state))
+    close = set()
     close.add(puzzle_board_state.get_data_hash())
-    while open:
+
+    ans = []
+    while not open.empty():
         head = open.get()
         cur_state = head.state
         cur_g = head.g
+
         if cur_state.is_final():
-            while cur_state.get_parent() is not None:
+            while cur_state is not None:
                 ans.append(cur_state)
                 cur_state = cur_state.get_parent()
-            ans.append(cur_state)
             break
 
         next_states = cur_state.next_states()
@@ -216,12 +216,10 @@ def astar(puzzle_board_state):
 
 
 if __name__ == "__main__":
-    test_data = np.array([[5,3,6], [1,8,4], [7,2,0]])
+    test_data = np.array([[5, 0, 2], [1, 4, 3], [7, 8, 6]])
     test_board = PuzzleBoardState(data=test_data)
-    test_board.next_states()
-    res = bfs(test_board)
-    for i in res:
-        print(i.data)
+    ans = astar(test_board)
+    for state in ans:
+        print(state.data)
         print()
-
-    print(f"length: {len(res)}")
+    print(f"length: {len(ans)}")
