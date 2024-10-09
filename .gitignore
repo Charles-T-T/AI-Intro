@@ -1,9 +1,11 @@
-**/draft
+/ppt
 
-**/ppt
+/practice.ipynb
 
-**/submit
+draft/
 
-**/__pycache__
+submit/
 
-**/practice.ipynb
+__pycache__/
+
+.vscode/
