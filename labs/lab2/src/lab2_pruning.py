@@ -63,7 +63,57 @@ def determine_move(board):
             next_move(int): 电脑(玩家O) 下一步棋的位置
 
     """
+    def minimax(board, player, alpha, beta):
+        """ 采用alpha-beta剪枝的minimax算法，返回当前棋盘的分数 """
+        win = winner(board)
+        if win != 0:
+            return win  # 胜负已分
+        if legal_move_left(board) == False:
+            return 0  # 平局
 
+        # 当前玩家为电脑（玩家O，max玩家）
+        if player == O_token:
+            max_val = -2  # 初始max值
+            for slot in SLOTS:
+                # 遍历所有可落子的位置
+                if board[slot] == Open_token:
+                    board[slot] = O_token  # 尝试落子
+                    cur_val = minimax(board, X_token, alpha, beta)  # 计算之后的分数
+                    board[slot] = Open_token  # 还原棋盘
+                    max_val = max(cur_val, max_val)  # 更新max值
+                    alpha = max(alpha, max_val)
+                    if beta <= alpha:
+                        break  # 剪枝
+            return max_val
+
+        # 当前玩家为人类（玩家X，min玩家）
+        else:
+            min_val = 2
+            for slot in SLOTS:
+                if board[slot] == Open_token:
+                    board[slot] = X_token
+                    cur_val = minimax(board, O_token, alpha, beta)
+                    board[slot] = Open_token
+                    min_val = min(cur_val, min_val)
+                    beta = min(beta, min_val)
+                    if alpha >= beta:
+                        break
+            return min_val
+
+    # 初始化alpha和beta
+    alpha = -2
+    beta = 2
+    max_val = -2
+
+    # 计算不同落子位置对应的分数，取分数最大处落子
+    for slot in SLOTS:
+        if board[slot] == Open_token:
+            board[slot] = O_token
+            cur_val = minimax(board, X_token, alpha, beta)
+            if (cur_val > max_val):
+                max_val = cur_val
+                next_move = slot
+            board[slot] = Open_token
     return next_move
 
 
@@ -75,9 +125,9 @@ def main():
     """ 主函数,先决定谁是X(先手方),再开始下棋 """
     next_move = HUMAN
     opt = input("请选择先手方，输入X表示玩家先手，输入O表示电脑先手：")
-    if opt == "X" or "x":
+    if opt == "X" or opt == "x":
         next_move = HUMAN
-    elif opt == "O" or "o":
+    elif opt == "O" or opt == "o":
         next_move = COMPUTER
     else:
         print("输入有误，默认玩家先手")
@@ -100,7 +150,7 @@ def main():
             except:
                 print("输入有误，请重试")
                 continue
-        if next_move == COMPUTER and legal_move_left(board):
+        elif next_move == COMPUTER and legal_move_left(board):  # 这里应该是elif
             mymv = determine_move(board)
             print("Computer最终决定下在", mymv)
             board[mymv] = O_token
