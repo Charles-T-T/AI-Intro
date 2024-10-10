@@ -78,9 +78,9 @@ def determine_move(board):
                 # 遍历所有可落子的位置
                 if board[slot] == Open_token:
                     board[slot] = O_token  # 尝试落子
-                    cur_val = minimax(board, X_token, alpha, beta)  # 计算之后的分数
+                    new_val = minimax(board, X_token, alpha, beta)  # 计算之后的分数
                     board[slot] = Open_token  # 还原棋盘
-                    max_val = max(cur_val, max_val)  # 更新max值
+                    max_val = max(new_val, max_val)  # 更新max值
                     alpha = max(alpha, max_val)
                     if beta <= alpha:
                         break  # 剪枝
@@ -92,9 +92,9 @@ def determine_move(board):
             for slot in SLOTS:
                 if board[slot] == Open_token:
                     board[slot] = X_token
-                    cur_val = minimax(board, O_token, alpha, beta)
+                    new_val = minimax(board, O_token, alpha, beta)
                     board[slot] = Open_token
-                    min_val = min(cur_val, min_val)
+                    min_val = min(new_val, min_val)
                     beta = min(beta, min_val)
                     if alpha >= beta:
                         break
@@ -109,9 +109,9 @@ def determine_move(board):
     for slot in SLOTS:
         if board[slot] == Open_token:
             board[slot] = O_token
-            cur_val = minimax(board, X_token, alpha, beta)
-            if (cur_val > max_val):
-                max_val = cur_val
+            new_val = minimax(board, X_token, alpha, beta)
+            if (new_val > max_val):
+                max_val = new_val
                 next_move = slot
             board[slot] = Open_token
     return next_move
