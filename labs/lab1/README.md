@@ -6,6 +6,6 @@
 ├── docs/
 │   ├── lab1.pdf       # 实验要求
 │   └── report.md      # 实验报告
-├── src/                    
-│   └── lab1_astar.py  # 实验代码
+└── src/                    
+    └── lab1_astar.py  # 实验代码
 ```
