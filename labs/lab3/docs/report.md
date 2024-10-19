@@ -1,6 +1,6 @@
 # Lab 3: K-means
 
-:man_student: 2022201535 樊昊天
+:man_student: Charles
 
 ## 实验概述
 
