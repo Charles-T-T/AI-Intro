@@ -21,7 +21,9 @@ def compute_return(start_index, chain, gamma):
     G = 0
     for i in reversed(range(start_index, len(chain))):
         # TODO ~1: 实现回报函数
-        # G = 
+        k = i - start_index  # gamma的指数
+        s = chain[i] - 1  # 状态序号
+        G += gamma ** k * rewards[s]
     return G
 
 
@@ -33,7 +35,7 @@ print("根据本序列计算得到回报为：%s。" % G)
 
 
 def compute(P, rewards, gamma, states_num):
-    value=0
+    value = 0
     ''' 利用贝尔曼方程的矩阵形式计算解析解,states_num是MRP的状态数 '''
     # TODO ~X: 在完成矩阵形式的解析解推导后，用代码实现解析解
     # 这个TODO直接给出答案了，没写进实验文档
@@ -103,12 +105,13 @@ Pi_2 = {
 def join(str1, str2):
     return str1 + '-' + str2
 
+
 gamma = 0.5
 # 转化后的MRP的状态转移矩阵
 # TODO ~2: 动手修改状态转移函数等参数，体会决策过程变化
 P_from_mdp_to_mrp = [
     [0.5, 0.5, 0.0, 0.0, 0.0],
-    [0.5, 0.0, 0.5, 0.0, 0.0],
+    [0.1, 0.0, 0.2, 0.7, 0.0],
     [0.0, 0.0, 0.0, 0.5, 0.5],
     [0.0, 0.1, 0.2, 0.2, 0.5],
     [0.0, 0.0, 0.0, 0.0, 1.0],
@@ -119,7 +122,6 @@ R_from_mdp_to_mrp = [-0.5, -1.5, -1.0, 5.5, 0]
 
 V = compute(P_from_mdp_to_mrp, R_from_mdp_to_mrp, gamma, 5)
 print("MDP中每个状态价值分别为\n", V)
-
 
 def sample(MDP, Pi, timestep_max, number):
     ''' 采样函数,策略Pi,限制最长时间步timestep_max,总共采样序列数number '''
@@ -164,12 +166,12 @@ print('第五条序列\n', episodes[4])
 def MC(episodes, V, N, gamma):
     for episode in episodes:
         G = 0
-        for i in range(len(episode) - 1, -1, -1):  #一个序列从后往前计算
+        for i in range(len(episode) - 1, -1, -1):  # 一个序列从后往前计算
             (s, a, r, s_next) = episode[i]
             # TODO ~3: 代码填空
-            # G = 
-            # N[s] = 
-            # V[s] = 
+            G = r + gamma * G
+            N[s] = N[s] + 1
+            V[s] = V[s] + (G - V[s]) / N[s]
 
 
 timestep_max = 20
