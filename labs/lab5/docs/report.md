@@ -15,8 +15,8 @@
 
 $$
 \begin{align}
-	G_t &= R_t + \gamma{R_{t+1}} + \gamma{R_{t+2}} + ... \\
-		&= \sum^{\infty}_{k=0} {{\gamma} ^{k}{R_{t+k}}}
+G_t &= R_t + \gamma{R_{t+1}} + \gamma{R_{t+2}} + ... \\
+&= \sum^\infty_{k=0} {\gamma^{k}{R_{t+k}}}
 \end{align}
 $$
 
@@ -121,6 +121,7 @@ $$
 & V(s) \leftarrow V(s) + \frac{G-V(s)}{N(s)}
 \end{align}
 $$
+
 可补全代码如下：
 
 ```python
